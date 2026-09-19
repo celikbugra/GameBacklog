@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using GameBacklog.Cli.Helpers;
+using GameBacklog.Cli.Core;
 
 namespace GameBacklog.Cli
 {
@@ -26,7 +27,7 @@ namespace GameBacklog.Cli
         {
             foreach (Game game in _games)
             {
-                Console.WriteLine(game.Title);
+                ConsoleHelper.TypeWriterLine(game.Title, Config.FastTypeWriterDelayMs);
             }
         }
 
@@ -36,27 +37,23 @@ namespace GameBacklog.Cli
             {
                 if (title == game.Title)
                 {
-                    Console.WriteLine(title);
-                    return;
-                }
-
-                else
-                {
-                    Console.WriteLine("does not exist");
+                    ConsoleHelper.TypeWriterLine(game.Title);
                     return;
                 }
             }
+
+            ConsoleHelper.TypeWriterLine("Game does not exist.");
         }
 
         public void ShowAllGameDetails()
         {
             foreach(Game game in _games)
             {
-                Console.WriteLine($"{game.Title} " +
-                                  $"| {game.Platform} " +
-                                  $"| {game.State} " +
-                                  $"| Rating: {game.Rating} " +
-                                  $"| Playtime: {game.PlayTimeHours}h");
+                ConsoleHelper.TypeWriterLine($"{game.Title} " +
+                                             $"| {game.Platform} " +
+                                             $"| {game.State} " +
+                                             $"| Rating: {game.Rating} " +
+                                             $"| Playtime: {game.PlayTimeHours}h");
             }
         }
     }

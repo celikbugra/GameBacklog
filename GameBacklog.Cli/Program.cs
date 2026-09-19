@@ -18,4 +18,6 @@ library.AddGame(redDeadRedemption2);
 library.FindGameByTitle("The Witcher 3");
 library.FindGameByTitle("Halo 4");
 
+library.ShowGames();
+
 Console.ReadLine();
