@@ -18,10 +18,37 @@ namespace GameBacklog.Cli
         }
 
 
-        public string Title { get; set; }
-        public Platform Platform { get; set; }
-        public GameState State { get; set; }
-        public int Rating { get; set; }
-        public double PlayTimeHours { get; set; }
+        public string Title { get; private set; }
+        public Platform Platform { get; private set; }
+        public GameState State { get; private set; }
+        public int Rating { get; private set; }
+        public double PlayTimeHours { get; private set; }
+
+        public void ChangeGameState(GameState newState)
+        {
+            if (State == newState)
+                return;
+        
+            State = newState;
+        }
+
+        public void ChangeRating(int newRating)
+        {
+            if (Rating == newRating)
+                return;
+
+            if (newRating < 0 || newRating > 10)
+                return;
+
+            Rating = newRating;
+        }
+
+        public void AddPlayTime(double hours)
+        {
+            if (hours <= 0)
+                return;
+
+            PlayTimeHours += hours;
+        }
     }
 }
