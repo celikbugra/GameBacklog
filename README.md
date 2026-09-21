@@ -14,7 +14,7 @@ tracking play state, ratings and playtime, and searching games by title.
 - Game library for storing multiple games
 - Add and remove games
 - Search games by title
-- Display individual and complete game information
+- Display game details
 - Platform and game state enums
 - Configurable console typewriter output
 

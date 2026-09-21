@@ -9,8 +9,16 @@ namespace GameBacklog.Cli
 
         public void AddGame(Game game)
         {
-            if (_games.Contains(game))
-                return;
+            foreach (Game existingGame in _games)
+            {
+                if (string.Equals(
+                    existingGame.Title,
+                    game.Title,
+                    StringComparison.OrdinalIgnoreCase))
+                {
+                    return;
+                }
+            }
 
             _games.Add(game);
         }
@@ -27,7 +35,9 @@ namespace GameBacklog.Cli
         {
             foreach (Game game in _games)
             {
-                ConsoleHelper.TypeWriterLine(game.Title, Config.FastTypeWriterDelayMs);
+                ConsoleHelper.TypeWriterLine(
+                    game.Title,
+                    Config.FastTypeWriterDelayMs);
             }
         }
 
@@ -35,7 +45,10 @@ namespace GameBacklog.Cli
         {
             foreach (Game game in _games)
             {
-                if (title == game.Title)
+                if (string.Equals(
+                    title,
+                    game.Title,
+                    StringComparison.OrdinalIgnoreCase))
                 {
                     ConsoleHelper.TypeWriterLine(game.Title);
                     return;
@@ -47,13 +60,14 @@ namespace GameBacklog.Cli
 
         public void ShowAllGameDetails()
         {
-            foreach(Game game in _games)
+            foreach (Game game in _games)
             {
-                ConsoleHelper.TypeWriterLine($"{game.Title} " +
-                                             $"| {game.Platform} " +
-                                             $"| {game.State} " +
-                                             $"| Rating: {game.Rating} " +
-                                             $"| Playtime: {game.PlayTimeHours}h");
+                ConsoleHelper.TypeWriterLine(
+                    $"{game.Title} " +
+                    $"| {game.Platform} " +
+                    $"| {game.State} " +
+                    $"| Rating: {game.Rating} " +
+                    $"| Playtime: {game.PlayTimeHours}h");
             }
         }
     }
