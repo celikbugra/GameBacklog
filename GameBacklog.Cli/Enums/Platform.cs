@@ -2,9 +2,10 @@
 {
     internal enum Platform
     {
-        PC,
-        Playstation,
-        Xbox,
-        Switch
+        None = 0,
+        PC = 1,
+        Playstation = 2,
+        Xbox = 3,
+        Switch = 4
     }
 }

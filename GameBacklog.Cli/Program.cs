@@ -8,6 +8,8 @@ Game redDeadRedemption2 = new Game("Red Dead Redemption II",  Platform.Playstati
 
 GameLibrary library = new GameLibrary();
 
+ConsoleMenu consoleMenu = new ConsoleMenu(library);
+
 library.AddGame(witcher3);
 library.AddGame(breathOfTheWild);
 library.AddGame(theLastOfUs);
@@ -15,9 +17,9 @@ library.AddGame(redDeadRedemption2);
 
 //library.ShowAllGameDetails();
 
-library.FindGameByTitle("The Witcher 3");
-library.FindGameByTitle("Halo 4");
+// library.FindGameByTitle("The Witcher 3");
+// library.FindGameByTitle("Halo 4");
 
-library.ShowGames();
+// library.ShowGames();
 
-Console.ReadLine();
+consoleMenu.Run();

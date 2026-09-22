@@ -1,0 +1,180 @@
+using GameBacklog.Cli.Core;
+using GameBacklog.Cli.Enums;
+using GameBacklog.Cli.Helpers;
+
+namespace GameBacklog.Cli;
+
+internal class ConsoleMenu
+{
+    private readonly GameLibrary _library;
+    private bool _exitProgram;
+
+    public ConsoleMenu(GameLibrary library)
+    {
+        _library = library;
+    }
+
+    public void Run()
+    {
+        while (!_exitProgram)
+        {
+            ShowMenu();
+
+            string userInputText = Console.ReadLine()!;
+
+            if (!int.TryParse(userInputText, out int userInputNumber))
+            {
+                ConsoleHelper.TypeWriterLine("Enter a valid number.");
+                Console.WriteLine();
+                continue;
+            }
+
+            switch (userInputNumber)
+            {
+                case 1:
+                    _library.ShowGames();
+                    break;
+
+                case 2:
+                    AddGame();
+                    break;
+
+                case 6:
+                    _exitProgram = true;
+                    break;
+
+                default:
+                    ConsoleHelper.TypeWriterLine("Unknown menu option.");
+                    break;
+            }
+
+            Console.WriteLine();
+        }
+
+        ConsoleHelper.TypeWriterLine("Goodbye.");
+    }
+
+    private void AddGame()
+    {
+        ConsoleHelper.TypeWriterLine("===== Add Game =====");
+        Console.WriteLine();
+
+        Console.Write("Title: ");
+        string gameTitle = Console.ReadLine()!;
+
+        if (string.IsNullOrWhiteSpace(gameTitle))
+        {
+            ConsoleHelper.TypeWriterLine("Title cannot be empty.");
+            return;
+        }
+
+
+        Console.WriteLine();
+        ConsoleHelper.TypeWriterLine(
+            "Available Platforms:",
+            Config.FastTypeWriterDelayMs);
+
+        foreach (Platform platformOption in Enum.GetValues<Platform>())
+        {
+            ConsoleHelper.TypeWriterLine(
+                $"{(int)platformOption}: {platformOption}",
+                Config.FastTypeWriterDelayMs);
+        }
+
+        Console.Write("Choose Platform: ");
+        string platformText = Console.ReadLine()!;
+
+        if (!int.TryParse(platformText, out int platformNumber) ||
+            !Enum.IsDefined(typeof(Platform), platformNumber))
+        {
+            ConsoleHelper.TypeWriterLine("Enter a valid platform.");
+            return;
+        }
+
+        Platform platform = (Platform)platformNumber;
+
+
+        Console.WriteLine();
+        ConsoleHelper.TypeWriterLine(
+            "Available States:",
+            Config.FastTypeWriterDelayMs);
+
+        foreach (GameState stateOption in Enum.GetValues<GameState>())
+        {
+            ConsoleHelper.TypeWriterLine(
+                $"{(int)stateOption}: {stateOption}",
+                Config.FastTypeWriterDelayMs);
+        }
+
+        Console.Write("Choose State: ");
+        string gameStateText = Console.ReadLine()!;
+
+        if (!int.TryParse(gameStateText, out int gameStateNumber) ||
+            !Enum.IsDefined(typeof(GameState), gameStateNumber))
+        {
+            ConsoleHelper.TypeWriterLine("Enter a valid state.");
+            return;
+        }
+
+        GameState state = (GameState)gameStateNumber;
+
+
+        Console.WriteLine();
+        Console.Write("Rating (0-10): ");
+        string ratingText = Console.ReadLine()!;
+
+        if (!int.TryParse(ratingText, out int rating))
+        {
+            ConsoleHelper.TypeWriterLine("Enter a valid rating.");
+            return;
+        }
+
+
+        Console.Write("Hours Played: ");
+        string playTimeText = Console.ReadLine()!;
+
+        if (!double.TryParse(playTimeText, out double playTime))
+        {
+            ConsoleHelper.TypeWriterLine("Enter a valid playtime.");
+            return;
+        }
+
+        try
+        {
+            Game userGame = new Game(
+                gameTitle,
+                platform,
+                state,
+                rating,
+                playTime);
+
+            bool gameAdded = _library.AddGame(userGame);
+
+            if (gameAdded)
+            {
+                ConsoleHelper.TypeWriterLine("Game added successfully.");
+            }
+
+            else
+            {
+                ConsoleHelper.TypeWriterLine("Game already exists.");
+            }
+        }
+
+        catch (ArgumentException ex)
+        {
+            ConsoleHelper.TypeWriterLine(ex.Message);
+        }
+    }
+
+    private void ShowMenu()
+    {
+        Console.WriteLine("1: Show all games");
+        Console.WriteLine("2: Add game");
+        Console.WriteLine("3: Find game");
+        Console.WriteLine("4: Update game");
+        Console.WriteLine("5: Remove game");
+        Console.WriteLine("6: Exit");
+        Console.Write("Choose option: ");
+    }
+}

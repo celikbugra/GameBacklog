@@ -2,9 +2,10 @@
 {
     internal enum GameState
     {
-        Backlog,
-        Playing,
-        Completed,
-        Dropped
+        None = 0,
+        Backlog = 1,
+        Playing = 2,
+        Completed = 3,
+        Dropped = 4
     }
 }

@@ -11,23 +11,6 @@ namespace GameBacklog.Cli
             int rating,
             double playTimeHours)
         {
-            if (string.IsNullOrWhiteSpace(title))
-                throw new ArgumentException("Title cannot be empty.");
-
-            if (rating < 0 || rating > 10)
-                throw new ArgumentOutOfRangeException(
-                    nameof(rating),
-                    "Rating must be between 0 and 10.");
-
-            if (double.IsNaN(playTimeHours) ||
-                double.IsInfinity(playTimeHours) ||
-                playTimeHours < 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(playTimeHours),
-                    "Playtime must be a valid positive value.");
-            }
-
             Title = title;
             Platform = platform;
             State = state;
@@ -35,11 +18,98 @@ namespace GameBacklog.Cli
             PlayTimeHours = playTimeHours;
         }
 
-        public string Title { get; private set; }
-        public Platform Platform { get; private set; }
-        public GameState State { get; private set; }
-        public int Rating { get; private set; }
-        public double PlayTimeHours { get; private set; }
+        private string _title = "";
+        public string Title
+        {
+            get
+            {
+                return _title;
+            }
+
+            private set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new ArgumentException("Title cannot be empty");
+
+                _title = value;
+            }
+        }
+        
+        private int _rating;
+        public int Rating
+        {
+            get
+            {
+                return _rating;
+            }
+
+            private set
+            {
+                if (value < 0 || value > 10)
+                    throw new ArgumentOutOfRangeException(
+                        nameof(Rating),
+                        "Rating must be between 0 and 10.");
+
+                _rating = value;
+            }
+        }
+
+        private double _playTimeHours;
+        public double PlayTimeHours
+        {
+            get
+            {
+                return _playTimeHours;
+            }
+
+            private set
+            {
+                if (double.IsNaN(value) ||
+                    double.IsInfinity(value) ||
+                    value < 0)
+                {
+                    throw new ArgumentOutOfRangeException(
+                    nameof(PlayTimeHours),
+                    "Playtime must be a valid non-negative value.");
+                }
+
+                _playTimeHours = value;
+            }
+        }
+
+        private Platform _platform;
+        public Platform Platform
+        {
+            get
+            {
+                return _platform;
+            }
+
+            private set
+            {
+                if (!Enum.IsDefined(value))
+                    throw new ArgumentOutOfRangeException(nameof(Platform));
+
+                _platform = value;
+            }
+        }
+
+        private GameState _state;
+        public GameState State
+        {
+            get
+            {
+                return _state;
+            }
+
+            private set
+            {
+                if (!Enum.IsDefined(value))
+                    throw new ArgumentOutOfRangeException(nameof(State));
+                
+                _state = value;
+            }
+        }
 
         public void ChangeGameState(GameState newState)
         {

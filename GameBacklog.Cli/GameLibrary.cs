@@ -5,10 +5,11 @@ namespace GameBacklog.Cli
 {
     internal class GameLibrary
     {
-        private List<Game> _games = new List<Game>();
+        private readonly List<Game> _games = new List<Game>();
 
-        public void AddGame(Game game)
+        public bool AddGame(Game game)
         {
+
             foreach (Game existingGame in _games)
             {
                 if (string.Equals(
@@ -16,11 +17,12 @@ namespace GameBacklog.Cli
                     game.Title,
                     StringComparison.OrdinalIgnoreCase))
                 {
-                    return;
+                    return false;
                 }
             }
 
             _games.Add(game);
+            return true;
         }
 
         public void RemoveGame(Game game)
