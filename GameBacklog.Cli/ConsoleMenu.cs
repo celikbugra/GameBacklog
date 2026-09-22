@@ -247,7 +247,7 @@ internal class ConsoleMenu
 
             case 2:
                 ChangeGameState(game);
-                return;
+                break;
 
             case 3:
                 ChangeRating(game);
@@ -286,7 +286,7 @@ internal class ConsoleMenu
         if (!int.TryParse(newPlatformText, out int newPlatformNumber) ||
             !Enum.IsDefined(typeof(Platform), newPlatformNumber))
         {
-            ConsoleHelper.TypeWriterLine("Enter a valid state.");
+            ConsoleHelper.TypeWriterLine("Enter a valid platform.");
             return;
         }
 
@@ -315,7 +315,7 @@ internal class ConsoleMenu
         if (!int.TryParse(newStateText, out int newStateNumber) ||
             !Enum.IsDefined(typeof(GameState), newStateNumber))
         {
-            ConsoleHelper.TypeWriterLine("Enter a valid platform.");
+            ConsoleHelper.TypeWriterLine("Enter a valid state.");
             return;
         }
 
@@ -391,7 +391,14 @@ internal class ConsoleMenu
         Console.WriteLine();
         Console.WriteLine("===== Games =====");
 
-        _library.ShowGames();
+        IReadOnlyList<Game> games = _library.GetAllGames();
+
+        foreach (Game game in games)
+        {
+            ConsoleHelper.TypeWriterLine(
+                game.Title,
+                Config.FastTypeWriterDelayMs);
+        }
 
         Console.WriteLine("===============");
         Console.WriteLine();

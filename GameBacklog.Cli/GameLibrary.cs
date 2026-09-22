@@ -1,7 +1,4 @@
-﻿using GameBacklog.Cli.Helpers;
-using GameBacklog.Cli.Core;
-
-namespace GameBacklog.Cli
+﻿namespace GameBacklog.Cli
 {
     internal class GameLibrary
     {
@@ -33,15 +30,9 @@ namespace GameBacklog.Cli
             _games.Remove(game);
         }
 
-        // TODO Return game data instead of writing directly to the console.
-        public void ShowGames()
+        public IReadOnlyList<Game> GetAllGames()
         {
-            foreach (Game game in _games)
-            {
-                ConsoleHelper.TypeWriterLine(
-                    game.Title,
-                    Config.FastTypeWriterDelayMs);
-            }
+            return _games;
         }
 
         public Game? FindGameByTitle(string title)
@@ -58,19 +49,6 @@ namespace GameBacklog.Cli
             }
 
             return null;
-        }
-
-        public void ShowAllGameDetails()
-        {
-            foreach (Game game in _games)
-            {
-                ConsoleHelper.TypeWriterLine(
-                    $"{game.Title} " +
-                    $"| {game.Platform} " +
-                    $"| {game.State} " +
-                    $"| Rating: {game.Rating} " +
-                    $"| Playtime: {game.PlayTimeHours}h");
-            }
         }
     }
 }
