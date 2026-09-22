@@ -2,21 +2,48 @@
 
 A C# console application for managing a personal video game backlog.
 
-The project provides basic game management features such as storing game data,
-tracking play state, ratings and playtime, and searching games by title.
+The project is being developed step by step as a learning project focused on
+object-oriented programming, input validation, separation of responsibilities
+and clean application structure.
 
-## Features
+## Current Features
 
-- Game model with title, platform, state, rating and playtime
-- Controlled game state changes
-- Rating validation
-- Playtime tracking
-- Game library for storing multiple games
-- Add and remove games
+- Interactive console menu
+- Add games through user input
 - Search games by title
-- Display game details
-- Platform and game state enums
+- Case-insensitive game lookup
+- Duplicate title prevention
+- Display stored game information
+- Update a game's platform
+- Track game platform, state, rating and playtime
+- Validate game data through encapsulated properties
+- Validate console input using `TryParse`
+- Validate enum selections using `Enum.IsDefined`
 - Configurable console typewriter output
+
+## Game Data
+
+Each game currently stores:
+
+- Title
+- Platform
+- Game state
+- Rating from 0 to 10
+- Played hours
+
+Supported game states:
+
+- Backlog
+- Playing
+- Completed
+- Dropped
+
+Supported platforms:
+
+- PC
+- PlayStation
+- Xbox
+- Switch
 
 ## Project Structure
 
@@ -30,6 +57,7 @@ GameBacklog/
 │   │   └── Platform.cs
 │   ├── Helpers/
 │   │   └── ConsoleHelper.cs
+│   ├── ConsoleMenu.cs
 │   ├── Game.cs
 │   ├── GameLibrary.cs
 │   ├── Program.cs
@@ -40,22 +68,48 @@ GameBacklog/
 
 ## Architecture
 
-The current application is structured around a small set of responsibilities:
+The application currently separates its responsibilities into several components:
 
-- `Game` represents a single game and controls changes to its state, rating and playtime
-- `GameLibrary` manages a collection of games and provides lookup and display functionality
-- `Enums` contains strongly typed values for platforms and game states
-- `ConsoleHelper` provides reusable console output behavior
-- `Config` stores shared configuration values
+- `Game` represents a single game and protects its internal state through
+  validated properties and controlled update methods.
+- `GameLibrary` manages the collection of games and provides operations such as
+  adding, removing and searching for games.
+- `ConsoleMenu` handles user interaction, input parsing and application flow.
+- `ConsoleHelper` provides reusable console output functionality.
+- `Config` contains shared console configuration values.
+- `Platform` and `GameState` provide strongly typed values instead of relying on
+  strings or arbitrary numbers.
 
-The project uses encapsulation to prevent unrestricted changes to game properties
-and exposes dedicated methods for updating game state, rating and playtime.
+### Validation
+
+The project uses multiple validation layers.
+
+`ConsoleMenu` validates whether user input can be converted into the required
+data type.
+
+For example:
+
+```csharp
+int.TryParse(...)
+double.TryParse(...)
+Enum.IsDefined(...)
+```
+
+The `Game` class additionally validates its own state so that invalid values
+cannot be stored even when a `Game` is created outside the console menu.
+
+Examples include:
+
+- Rating must be between `0` and `10`
+- Playtime cannot be negative, `NaN` or infinite
+- Platform and game state must contain defined enum values
+- Game titles cannot be empty
 
 ## Running the Project
 
-Requires the .NET SDK.
+The project currently targets **.NET 9**.
 
-Build the project:
+Build the solution:
 
 ```bash
 dotnet build
@@ -67,11 +121,33 @@ Run the console application:
 dotnet run --project GameBacklog.Cli
 ```
 
+## Current Development
+
+The console application currently supports:
+
+```text
+1: Show all games
+2: Add game
+3: Find game
+4: Update game
+6: Exit
+```
+
+The update system currently supports changing a game's platform.
+
+Additional update operations and game removal are still being implemented.
+
 ## Planned Development
 
-The project is intended to be expanded step by step with:
+Planned next steps include:
 
-- Database persistence
+- Update game state
+- Update rating
+- Add playtime through the update menu
+- Remove games through the console menu
+- Further separation of console output from game library logic
+- Automated tests
+- Database persistence with SQLite
 - Entity Framework Core
 - ASP.NET Core REST API
 - Separate client application
@@ -79,6 +155,7 @@ The project is intended to be expanded step by step with:
 ## Technologies
 
 - C#
-- .NET
+- .NET 9
 - Object-oriented programming
+- Nullable reference types
 - Git
