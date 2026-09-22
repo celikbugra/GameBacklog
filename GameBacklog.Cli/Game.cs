@@ -18,7 +18,7 @@ namespace GameBacklog.Cli
             PlayTimeHours = playTimeHours;
         }
 
-        private string _title = "";
+        private string _title = string.Empty;
         public string Title
         {
             get
@@ -109,6 +109,14 @@ namespace GameBacklog.Cli
                 
                 _state = value;
             }
+        }
+
+        public void ChangePlatform(Platform newPlatform)
+        {
+            if (Platform == newPlatform)
+                return;
+
+            Platform = newPlatform;
         }
 
         public void ChangeGameState(GameState newState)

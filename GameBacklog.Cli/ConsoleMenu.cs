@@ -43,6 +43,10 @@ internal class ConsoleMenu
                     FindGame();
                     break;
 
+                case 4:
+                    UpdateGame();
+                    break;
+
                 case 6:
                     _exitProgram = true;
                     break;
@@ -71,8 +75,6 @@ internal class ConsoleMenu
             ConsoleHelper.TypeWriterLine("Title cannot be empty.");
             return;
         }
-
-        Game? game = _library.FindGameByTitle(title);
 
 
         Console.WriteLine();
@@ -197,14 +199,92 @@ internal class ConsoleMenu
         $"| Playtime: {game.PlayTimeHours}h");
     }
 
+    private void UpdateGame()
+    {
+        ConsoleHelper.TypeWriterLine("===== Update Game =====");
+        Console.WriteLine();
+
+        Console.Write("Title: ");
+        string title = Console.ReadLine()!;
+
+        Game? game = _library.FindGameByTitle(title);
+
+        if (game == null)
+        {
+            ConsoleHelper.TypeWriterLine("Game does not exist.");
+            return;
+        }
+
+        ShowUpdateMenu();
+
+        string updateOptionText = Console.ReadLine()!;
+
+        if (!int.TryParse(updateOptionText, out int updateOptionNumber))
+        {
+            ConsoleHelper.TypeWriterLine("Enter a valid option.");
+            return;
+        }
+
+        switch (updateOptionNumber)
+        {
+            case 1:
+                ChangePlatform(game);
+                break;
+
+            case 2:
+                return;
+
+            default:
+                ConsoleHelper.TypeWriterLine("Unknown update option.");
+                break;
+        }
+    }
+
+    private void ChangePlatform(Game game)
+    {
+        ConsoleHelper.TypeWriterLine("Available Platforms:");
+
+        
+        foreach (Platform platformOption in Enum.GetValues<Platform>())
+        {
+            ConsoleHelper.TypeWriterLine(
+                $"{(int)platformOption}: {platformOption}",
+                Config.FastTypeWriterDelayMs);
+        }
+
+        Console.Write("Choose new Platform: ");
+        string newPlatformText = Console.ReadLine()!;
+
+        if (!int.TryParse(newPlatformText, out int newPlatformNumber) ||
+            !Enum.IsDefined(typeof(Platform), newPlatformNumber))
+        {
+            ConsoleHelper.TypeWriterLine("Enter a valid platform.");
+            return;
+        }
+
+        Platform newPlatform = (Platform)newPlatformNumber;
+
+        game.ChangePlatform(newPlatform);
+
+        ConsoleHelper.TypeWriterLine("Platform updated successfully.");
+    }
+
     private void ShowMenu()
     {
         Console.WriteLine("1: Show all games");
         Console.WriteLine("2: Add game");
         Console.WriteLine("3: Find game");
         Console.WriteLine("4: Update game");
-        Console.WriteLine("5: Remove game");
         Console.WriteLine("6: Exit");
+        
+        Console.Write("Choose option: ");
+    }
+
+    private void ShowUpdateMenu()
+    {
+        Console.WriteLine("1: Platform");
+        Console.WriteLine("2: Cancel");
+
         Console.Write("Choose option: ");
     }
 }
