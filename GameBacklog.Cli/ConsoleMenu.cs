@@ -246,6 +246,18 @@ internal class ConsoleMenu
                 break;
 
             case 2:
+                ChangeGameState(game);
+                return;
+
+            case 3:
+                ChangeRating(game);
+                break;
+
+            case 4:
+                AddPlaytime(game);
+                break;
+
+            case 5:
                 return;
 
             default:
@@ -274,7 +286,7 @@ internal class ConsoleMenu
         if (!int.TryParse(newPlatformText, out int newPlatformNumber) ||
             !Enum.IsDefined(typeof(Platform), newPlatformNumber))
         {
-            ConsoleHelper.TypeWriterLine("Enter a valid platform.");
+            ConsoleHelper.TypeWriterLine("Enter a valid state.");
             return;
         }
 
@@ -283,6 +295,72 @@ internal class ConsoleMenu
         game.ChangePlatform(newPlatform);
 
         ConsoleHelper.TypeWriterLine("Platform updated successfully.");
+    }
+
+    private void ChangeGameState(Game game)
+    {
+        ConsoleHelper.TypeWriterLine("Available States");
+        Console.WriteLine();
+
+        foreach(GameState stateOption in Enum.GetValues<GameState>())
+        {
+            ConsoleHelper.TypeWriterLine(
+            $"{(int)stateOption}: {stateOption}",
+            Config.FastTypeWriterDelayMs);
+        }
+
+        Console.Write("Choose new State: ");
+        string newStateText = Console.ReadLine()!;
+
+        if (!int.TryParse(newStateText, out int newStateNumber) ||
+            !Enum.IsDefined(typeof(GameState), newStateNumber))
+        {
+            ConsoleHelper.TypeWriterLine("Enter a valid platform.");
+            return;
+        }
+
+        GameState newState = (GameState)newStateNumber;
+
+        game.ChangeGameState(newState);
+
+        ConsoleHelper.TypeWriterLine("State updated successfully.");
+    }
+
+    private void ChangeRating(Game game)
+    {
+        ConsoleHelper.TypeWriterLine("Rating (0 - 10)");
+        string newRatingText = Console.ReadLine()!;
+
+        if (!int.TryParse(newRatingText, out int newRatingNumber) ||
+            newRatingNumber < 0 ||
+            newRatingNumber > 10)
+        {
+            ConsoleHelper.TypeWriterLine("Enter a valid rating.");
+            return;
+        }
+
+        game.ChangeRating(newRatingNumber);
+
+        ConsoleHelper.TypeWriterLine("Rating updated successfully.");
+    }
+
+    private void AddPlaytime(Game game)
+    {
+        ConsoleHelper.TypeWriterLine("Add playtime");
+        string newPlayTimeText = Console.ReadLine()!;
+
+        if (!double.TryParse(newPlayTimeText, out double newPlayTimeNumber) ||
+            double.IsNaN(newPlayTimeNumber) ||
+            double.IsInfinity(newPlayTimeNumber) ||
+            newPlayTimeNumber <= 0)
+        {
+            ConsoleHelper.TypeWriterLine("Enter a valid positive playtime.");
+            return;
+        }
+
+        game.AddPlayTime(newPlayTimeNumber);
+
+        ConsoleHelper.TypeWriterLine("Playtime added successfully.");
     }
 
     private void RemoveGame()
@@ -336,7 +414,10 @@ internal class ConsoleMenu
     private void ShowUpdateMenu()
     {
         Console.WriteLine("1: Platform");
-        Console.WriteLine("2: Cancel");
+        Console.WriteLine("2: State");
+        Console.WriteLine("3: Rating");
+        Console.WriteLine("4: Add playtime");
+        Console.WriteLine("5: Cancel");
 
         Console.Write("Choose option: ");
     }
