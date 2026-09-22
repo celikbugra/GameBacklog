@@ -33,6 +33,7 @@ namespace GameBacklog.Cli
             _games.Remove(game);
         }
 
+        // TODO Return game data instead of writing directly to the console.
         public void ShowGames()
         {
             foreach (Game game in _games)
@@ -55,7 +56,7 @@ namespace GameBacklog.Cli
                     return game;
                 }
             }
-            
+
             return null;
         }
 

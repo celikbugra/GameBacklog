@@ -32,7 +32,7 @@ internal class ConsoleMenu
             switch (userInputNumber)
             {
                 case 1:
-                    _library.ShowGames();
+                    ShowGames();
                     break;
 
                 case 2:
@@ -45,6 +45,10 @@ internal class ConsoleMenu
 
                 case 4:
                     UpdateGame();
+                    break;
+
+                case 5:
+                    RemoveGame();
                     break;
 
                 case 6:
@@ -64,6 +68,7 @@ internal class ConsoleMenu
 
     private void AddGame()
     {
+        Console.WriteLine();
         ConsoleHelper.TypeWriterLine("===== Add Game =====");
         Console.WriteLine();
 
@@ -131,7 +136,9 @@ internal class ConsoleMenu
         Console.Write("Rating (0-10): ");
         string ratingText = Console.ReadLine()!;
 
-        if (!int.TryParse(ratingText, out int rating))
+        if (!int.TryParse(ratingText, out int rating) ||
+            rating < 0 ||
+            rating > 10)
         {
             ConsoleHelper.TypeWriterLine("Enter a valid rating.");
             return;
@@ -141,7 +148,10 @@ internal class ConsoleMenu
         Console.Write("Hours Played: ");
         string playTimeText = Console.ReadLine()!;
 
-        if (!double.TryParse(playTimeText, out double playTime))
+        if (!double.TryParse(playTimeText, out double playTime) ||
+            double.IsNaN(playTime) ||
+            double.IsInfinity(playTime) ||
+            playTime < 0)
         {
             ConsoleHelper.TypeWriterLine("Enter a valid playtime.");
             return;
@@ -173,6 +183,8 @@ internal class ConsoleMenu
         {
             ConsoleHelper.TypeWriterLine(ex.Message);
         }
+
+        Console.WriteLine("===============");
     }
 
     private void FindGame()
@@ -197,6 +209,8 @@ internal class ConsoleMenu
         $"| {game.State} " +
         $"| Rating: {game.Rating} " +
         $"| Playtime: {game.PlayTimeHours}h");
+
+        Console.WriteLine("===============");
     }
 
     private void UpdateGame()
@@ -238,6 +252,8 @@ internal class ConsoleMenu
                 ConsoleHelper.TypeWriterLine("Unknown update option.");
                 break;
         }
+
+        Console.WriteLine("===============");
     }
 
     private void ChangePlatform(Game game)
@@ -269,12 +285,49 @@ internal class ConsoleMenu
         ConsoleHelper.TypeWriterLine("Platform updated successfully.");
     }
 
+    private void RemoveGame()
+    {
+        ConsoleHelper.TypeWriterLine("===== Remove Game =====");
+        Console.WriteLine();
+
+        Console.Write("Title: ");
+        string title = Console.ReadLine()!;
+
+        Game? game = _library.FindGameByTitle(title);
+
+        if (game == null)
+        {
+            ConsoleHelper.TypeWriterLine("Game does not exist.");
+            return;
+        }
+
+        _library.RemoveGame(game);
+
+        ConsoleHelper.TypeWriterLine("Game removed successfully.");
+
+        Console.WriteLine("===============");
+    }
+
+    private void ShowGames()
+    {
+        Console.WriteLine();
+        Console.WriteLine("===== Games =====");
+
+        _library.ShowGames();
+
+        Console.WriteLine("===============");
+        Console.WriteLine();
+    }
+
     private void ShowMenu()
     {
+        Console.WriteLine("===== Menu =====");
+
         Console.WriteLine("1: Show all games");
         Console.WriteLine("2: Add game");
         Console.WriteLine("3: Find game");
         Console.WriteLine("4: Update game");
+        Console.WriteLine("5: Remove game");
         Console.WriteLine("6: Exit");
         
         Console.Write("Choose option: ");
