@@ -43,7 +43,7 @@ namespace GameBacklog.Cli
             }
         }
 
-        public void FindGameByTitle(string title)
+        public Game? FindGameByTitle(string title)
         {
             foreach (Game game in _games)
             {
@@ -52,12 +52,11 @@ namespace GameBacklog.Cli
                     game.Title,
                     StringComparison.OrdinalIgnoreCase))
                 {
-                    ConsoleHelper.TypeWriterLine(game.Title);
-                    return;
+                    return game;
                 }
             }
-
-            ConsoleHelper.TypeWriterLine("Game does not exist.");
+            
+            return null;
         }
 
         public void ShowAllGameDetails()

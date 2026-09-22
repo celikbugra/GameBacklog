@@ -39,6 +39,10 @@ internal class ConsoleMenu
                     AddGame();
                     break;
 
+                case 3:
+                    FindGame();
+                    break;
+
                 case 6:
                     _exitProgram = true;
                     break;
@@ -60,13 +64,15 @@ internal class ConsoleMenu
         Console.WriteLine();
 
         Console.Write("Title: ");
-        string gameTitle = Console.ReadLine()!;
+        string title = Console.ReadLine()!;
 
-        if (string.IsNullOrWhiteSpace(gameTitle))
+        if (string.IsNullOrWhiteSpace(title))
         {
             ConsoleHelper.TypeWriterLine("Title cannot be empty.");
             return;
         }
+
+        Game? game = _library.FindGameByTitle(title);
 
 
         Console.WriteLine();
@@ -142,7 +148,7 @@ internal class ConsoleMenu
         try
         {
             Game userGame = new Game(
-                gameTitle,
+                title,
                 platform,
                 state,
                 rating,
@@ -165,6 +171,30 @@ internal class ConsoleMenu
         {
             ConsoleHelper.TypeWriterLine(ex.Message);
         }
+    }
+
+    private void FindGame()
+    {
+        ConsoleHelper.TypeWriterLine("===== Find Game =====");
+        Console.WriteLine();
+
+        Console.Write("Title: ");
+        string title = Console.ReadLine()!;
+
+        Game? game = _library.FindGameByTitle(title);
+
+        if (game == null)
+        {
+            ConsoleHelper.TypeWriterLine("Game does not exist.");
+            return;
+        }
+        
+        ConsoleHelper.TypeWriterLine(
+        $"{game.Title} " +
+        $"| {game.Platform} " +
+        $"| {game.State} " +
+        $"| Rating: {game.Rating} " +
+        $"| Playtime: {game.PlayTimeHours}h");
     }
 
     private void ShowMenu()
