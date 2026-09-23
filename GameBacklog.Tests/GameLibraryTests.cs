@@ -1,6 +1,8 @@
 using GameBacklog.Cli;
 using GameBacklog.Cli.Enums;
 
+namespace GameBacklog.Tests;
+
 public class GameLibraryTests
 {
     [Fact]
@@ -47,7 +49,7 @@ public class GameLibraryTests
 
         Game? foundGame = gameLibrary.FindGameByTitle(batman.Title);
 
-        Assert.NotNull(foundGame);
+        Assert.Same(batman, foundGame);
     }
 
     [Fact]
@@ -102,5 +104,5 @@ public class GameLibraryTests
         bool result = gameLibrary.RemoveGame(outlast);
 
         Assert.False(result);
-    }   
+    }
 }

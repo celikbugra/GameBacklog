@@ -146,7 +146,7 @@ namespace GameBacklog.Cli
                     "Playtime to add must be a positive finite value.");
             }
 
-                PlayTimeHours += hours;
-            }
+            PlayTimeHours += hours;
+        }
     }
 }

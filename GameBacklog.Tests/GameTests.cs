@@ -49,4 +49,35 @@ public class GameTests
                 -1);
         });
     }
+
+    [Fact]
+    public void ChangeRating_InvalidRating_ThrowsArgumentOutOfRangeException()
+    {
+        Game outlast = new("Outlast",
+            Platform.PC,
+            GameState.Completed,
+            10,
+            150);
+
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+        {
+            outlast.ChangeRating(12);
+        });
+    }
+
+    [Fact]
+    public void AddPlayTime_InvalidHours_ThrowsArgumentOutOfRangeException()
+    {
+        Game outlast = new(
+            "Outlast",
+            Platform.PC,
+            GameState.Completed,
+            10,
+            150);
+
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+        {
+            outlast.AddPlayTime(-25);
+        });
+    }
 }
