@@ -211,19 +211,3 @@ Planned next steps include:
 * xUnit
 * Git
 * GitHub
-
-## Learning Goals
-
-This project is intentionally developed incrementally.
-
-The goal is not only to build a working application, but also to understand the underlying concepts used in professional .NET development, including:
-
-* Object-oriented design
-* Encapsulation
-* Input and domain validation
-* Separation of responsibilities
-* Automated testing
-* Persistence
-* Databases
-* APIs
-* Application architecture
