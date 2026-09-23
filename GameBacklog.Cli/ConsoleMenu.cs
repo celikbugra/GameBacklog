@@ -379,9 +379,13 @@ internal class ConsoleMenu
             return;
         }
 
-        _library.RemoveGame(game);
+        bool gameRemoved = _library.RemoveGame(game);
 
-        ConsoleHelper.TypeWriterLine("Game removed successfully.");
+        if (gameRemoved)
+            ConsoleHelper.TypeWriterLine("Game removed successfully.");
+
+        else
+            ConsoleHelper.TypeWriterLine("Game does not exist.");
 
         Console.WriteLine("===============");
     }

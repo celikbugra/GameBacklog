@@ -22,12 +22,13 @@
             return true;
         }
 
-        public void RemoveGame(Game game)
+        public bool RemoveGame(Game game)
         {
             if (!_games.Contains(game))
-                return;
+                return false;
 
             _games.Remove(game);
+            return true;
         }
 
         public IReadOnlyList<Game> GetAllGames()
