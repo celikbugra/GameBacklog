@@ -15,11 +15,4 @@ library.AddGame(breathOfTheWild);
 library.AddGame(theLastOfUs);
 library.AddGame(redDeadRedemption2);
 
-//library.ShowAllGameDetails();
-
-// library.FindGameByTitle("The Witcher 3");
-// library.FindGameByTitle("Halo 4");
-
-// library.ShowGames();
-
 consoleMenu.Run();

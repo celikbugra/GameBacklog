@@ -129,9 +129,6 @@ namespace GameBacklog.Cli
 
         public void ChangeRating(int newRating)
         {
-            if (newRating < 0 || newRating > 10)
-                return;
-
             if (Rating == newRating)
                 return;
 
@@ -144,10 +141,12 @@ namespace GameBacklog.Cli
                 double.IsInfinity(hours) ||
                 hours <= 0)
             {
-                return;
+                throw new ArgumentOutOfRangeException(
+                    nameof(hours),
+                    "Playtime to add must be a positive finite value.");
             }
 
-            PlayTimeHours += hours;
-        }
+                PlayTimeHours += hours;
+            }
     }
 }

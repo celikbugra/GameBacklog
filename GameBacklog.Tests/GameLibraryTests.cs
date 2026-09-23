@@ -1,56 +1,8 @@
-﻿using GameBacklog.Cli;
+using GameBacklog.Cli;
 using GameBacklog.Cli.Enums;
-using Xunit.Sdk;
 
-namespace GameBacklog.Tests;
-
-public class GameTests
+public class GameLibraryTests
 {
-    [Fact]
-    public void Constructor_WithValidValues_SetsProperties()
-    {
-        Game game = new Game(
-            "The Witcher 3",
-            Platform.PC,
-            GameState.Playing,
-            10,
-            100);
-
-        Assert.Equal("The Witcher 3", game.Title);
-        Assert.Equal(Platform.PC, game.Platform);
-        Assert.Equal(GameState.Playing, game.State);
-        Assert.Equal(10, game.Rating);
-        Assert.Equal(100, game.PlayTimeHours);
-    }
-
-    [Fact]
-    public void Constructor_WithRatingAboveTen_ThrowsArgumentOutOfRangeException()
-    {
-        Assert.Throws<ArgumentOutOfRangeException>(() =>
-        {
-            new Game(
-                "The Witcher 3",
-                Platform.PC,
-                GameState.Playing,
-                11,
-                100);
-        });
-    }
-
-    [Fact]
-    public void Constructor_WithPlayTimeLessZero_ThrowsArgumentOutOfRangeException()
-    {
-        Assert.Throws<ArgumentOutOfRangeException>(() =>
-        {
-            new Game(
-                "The Witcher 3",
-                Platform.PC,
-                GameState.Playing,
-                10,
-                -1);
-        });
-    }
-
     [Fact]
     public void AddGame_NewGame_ReturnsTrue()
     {
@@ -135,4 +87,20 @@ public class GameTests
 
         Assert.Null(foundGame);
     }
+
+    [Fact]
+    public void RemoveGame_UnknownGame_ReturnsFalse()
+    {
+        GameLibrary gameLibrary = new();
+
+        Game outlast = new("Outlast",
+            Platform.PC,
+            GameState.Completed,
+            10,
+            150);
+
+        bool result = gameLibrary.RemoveGame(outlast);
+
+        Assert.False(result);
+    }   
 }
