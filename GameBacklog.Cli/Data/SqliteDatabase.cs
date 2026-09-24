@@ -140,4 +140,28 @@ internal class SqliteDatabase
             Console.WriteLine($"{affectedRows} rows deleted");
         }
     }
+
+    public void UpdateRating(int id, int rating)
+    {
+        using SqliteConnection connection = 
+            new SqliteConnection(_connectionString);
+
+        connection.Open();
+
+        string sql = """
+            UPDATE Games
+            SET Rating = $rating
+            WHERE Id = $id;
+            """;
+
+        using SqliteCommand command = 
+            new SqliteCommand(sql, connection);
+
+        command.Parameters.AddWithValue("$rating", rating);
+        command.Parameters.AddWithValue("$id", id);
+
+        int affectedRows = command.ExecuteNonQuery();
+
+        Console.WriteLine($"affected Rows: {affectedRows}");
+    }
 }
