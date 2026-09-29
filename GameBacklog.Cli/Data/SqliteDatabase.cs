@@ -11,6 +11,31 @@ internal class SqliteDatabase
     {
         _connectionString = connectionString;
     }
+    
+    public void Initialize()
+    {
+        using SqliteConnection connection =
+            new SqliteConnection(_connectionString);
+
+        connection.Open();
+
+        string sql = """
+            CREATE TABLE IF NOT EXISTS Games
+            (
+                Id INTEGER PRIMARY KEY,
+                Title TEXT NOT NULL,
+                Platform INTEGER NOT NULL,
+                State INTEGER NOT NULL,
+                Rating INTEGER NOT NULL CHECK (Rating >= 0 AND Rating <= 10),
+                PlayTimeHours REAL NOT NULL CHECK (PlayTimeHours >= 0)
+            );
+            """;
+
+        using SqliteCommand command =
+            new SqliteCommand(sql, connection);
+
+        command.ExecuteNonQuery();
+    }
 
     public void ShowGames()
     {
