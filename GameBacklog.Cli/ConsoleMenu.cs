@@ -1,3 +1,4 @@
+using GameBacklog.Cli.Data;
 using GameBacklog.Cli.Core;
 using GameBacklog.Cli.Enums;
 using GameBacklog.Cli.Helpers;
@@ -7,11 +8,14 @@ namespace GameBacklog.Cli;
 internal class ConsoleMenu
 {
     private readonly GameLibrary _library;
+    private readonly SqliteDatabase _database;
     private bool _exitProgram;
 
-    public ConsoleMenu(GameLibrary library)
+    public ConsoleMenu(GameLibrary library,
+                       SqliteDatabase database)
     {
         _library = library;
+        _database = database;
     }
 
     public void Run()

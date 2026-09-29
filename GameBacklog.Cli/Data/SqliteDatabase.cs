@@ -11,7 +11,53 @@ internal class SqliteDatabase
     {
         _connectionString = connectionString;
     }
-    
+
+    public List<Game> GetAllGames()
+    {
+        List<Game> games = new List<Game>();
+
+        using SqliteConnection connection =
+            new SqliteConnection(_connectionString);
+        
+        connection.Open();
+
+        string sql = """
+            SELECT Title,
+                   Platform,
+                   State,
+                   Rating,
+                   PlayTimeHours
+            FROM Games;
+            """;
+
+        using SqliteCommand command =
+            new SqliteCommand(sql, connection);
+
+        using SqliteDataReader reader =
+            command.ExecuteReader();
+
+        while (reader.Read())
+        {
+            string title = reader.GetString(0);
+            Platform platform = (Platform)reader.GetInt32(1);
+            GameState state = (GameState)reader.GetInt32(2);
+            int rating = reader.GetInt32(3);
+            double playTimeHours = reader.GetDouble(4);
+
+            Game game = new Game(
+                title,
+                platform,
+                state,
+                rating,
+                playTimeHours
+            );
+
+            games.Add(game);
+        }
+        
+        return games;
+    }
+
     public void Initialize()
     {
         using SqliteConnection connection =
