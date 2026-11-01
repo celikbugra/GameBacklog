@@ -397,18 +397,33 @@ internal class ConsoleMenu
     private void ShowGames()
     {
         Console.WriteLine();
-        Console.WriteLine("===== Games =====");
+        Console.WriteLine("===== Game Library =====");
+        Console.WriteLine();
 
         IReadOnlyList<Game> games = _library.GetAllGames();
 
-        foreach (Game game in games)
+        if (games.Count == 0)
         {
-            ConsoleHelper.TypeWriterLine(
-                game.Title,
-                Config.FastTypeWriterDelayMs);
+            Console.WriteLine("No games in your library yet.");
+        }
+        else
+        {
+            int gameNumber = 1;
+
+            foreach (Game game in games)
+            {
+                Console.WriteLine($"{gameNumber}. {game.Title}");
+                Console.WriteLine($"   Platform: {game.Platform}");
+                Console.WriteLine($"   State: {game.State}");
+                Console.WriteLine($"   Rating: {game.Rating}/10");
+                Console.WriteLine($"   Playtime: {game.PlayTimeHours:0.##}h");
+                Console.WriteLine();
+
+                gameNumber++;
+            }
         }
 
-        Console.WriteLine("===============");
+        Console.WriteLine("========================");
         Console.WriteLine();
     }
 
